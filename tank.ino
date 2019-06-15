@@ -4,7 +4,7 @@
 /***********************************************************************************
  *                           DEFINES & CONSTANTS
  **********************************************************************************/
-#define SETUP_BLUETOOTH_MODULE  1                // 0 disabled | 1 enabled
+#define SETUP_BLUETOOTH_MODULE  0                // 0 disabled | 1 enabled
 #define BLUETOOTH_NAME          "nastytooth"
 #define BLUETOOTH_PWD           "0000"
 #define BLUETOOTH_BAUD          "4"             // id        baud rate             
@@ -52,6 +52,27 @@
 #define PIN_TX   1
 
 
+#define SPEED 150
+#define BUFFER_SIZE 11
+
+#define LEFT_FRONT 'a'
+#define RIGHT_FRONT 'b'
+#define LEFT_BACK 'c'
+#define RIGHT_BACK 'd'
+#define RIGHT_STOP 'e'
+#define LEFT_STOP 'f'
+#define GUN_FIRE 'g'
+#define GUN_FIRE_STOP 'h'
+#define TURRET_LEFT 'i'
+#define TURRET_LEFT_STOP 'l'
+#define TURRET_RIGHT 'm'
+#define TURRET_RIGHT_STOP 'n'
+#define GUN_UP 'o'
+#define GUN_UP_STOP 'p'
+#define GUN_DOWN 'q'
+#define GUN_DOWN_STOP 'r'
+
+
 /***********************************************************************************
  *                                  PROTOCOL
  * 
@@ -80,6 +101,16 @@ static const motor_data_t motors_data[] =
     {PIN_EN_5, PIN_IA_5, PIN_IB_5},
     {PIN_EN_6, PIN_IA_6, PIN_IB_6}
 };
+
+
+typedef enum 
+{
+    T_LEFT_TRUCK,
+    T_RIGHT_TRUCK,
+    T_TURRET,
+    T_CANNON_ELEV,
+    T_CANNON_FIRE
+} tank_motors_t;
 
 
 /***********************************************************************************
@@ -180,5 +211,26 @@ void setup() {
 }
 
 void loop() {
+    while(serial.available()) {
+        char c = char(serial.read());
 
+        switch(c) {
+            case LEFT_FRONT:        set_motor(motors_data[T_LEFT_TRUCK], FORWARD, 255);     break;
+            case RIGHT_FRONT:       set_motor(motors_data[T_RIGHT_TRUCK], FORWARD, 255);    break;
+            case LEFT_BACK:         set_motor(motors_data[T_LEFT_TRUCK], BACKWARD, 255);    break;
+            case RIGHT_BACK:        set_motor(motors_data[T_RIGHT_TRUCK], BACKWARD, 255);   break;
+            case RIGHT_STOP:        set_motor(motors_data[T_RIGHT_TRUCK], STOP, 0);         break;
+            case LEFT_STOP:         set_motor(motors_data[T_LEFT_TRUCK], STOP, 0);          break;
+            case GUN_FIRE:          set_motor(motors_data[T_CANNON_FIRE], FORWARD, 255);    break;
+            case GUN_FIRE_STOP:     set_motor(motors_data[T_CANNON_FIRE], STOP, 0);         break;
+            case TURRET_LEFT:       set_motor(motors_data[T_TURRET], FORWARD, 255);         break;
+            case TURRET_RIGHT:      set_motor(motors_data[T_TURRET], BACKWARD, 255);        break;
+            case TURRET_LEFT_STOP:  set_motor(motors_data[T_TURRET], STOP, 0);              break;
+            case TURRET_RIGHT_STOP: set_motor(motors_data[T_TURRET], STOP, 0);              break;
+            case GUN_UP:            set_motor(motors_data[T_CANNON_ELEV], FORWARD, 255);    break;
+            case GUN_DOWN:          set_motor(motors_data[T_CANNON_ELEV], BACKWARD, 255);   break;
+            case GUN_UP_STOP:       set_motor(motors_data[T_CANNON_ELEV], STOP, 0);         break;
+            case GUN_DOWN_STOP:     set_motor(motors_data[T_CANNON_ELEV], STOP, 0);         break;
+        }
+    }
 }
