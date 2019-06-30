@@ -21,9 +21,12 @@
                                                 // B---------921600
                                                 // C---------1382400
 
+// Pins 490Hz -> 3,9,10,11
+// Pins 980Hz -> 5,6
+
 #define PIN_EN_1 3 
-#define PIN_IA_1 7
-#define PIN_IB_1 4
+#define PIN_IA_1 4
+#define PIN_IB_1 7
 
 #define PIN_EN_2 5
 #define PIN_IA_2 2
@@ -34,8 +37,8 @@
 #define PIN_IB_3 12
 
 #define PIN_EN_4 9
-#define PIN_IA_4 A4
-#define PIN_IB_4 A5
+#define PIN_IA_4 A5
+#define PIN_IB_4 A4
 
 #define PIN_EN_5 11
 #define PIN_IA_5 A2
@@ -94,20 +97,20 @@ typedef struct
 
 static const motor_data_t motors_data[] = 
 {
-    {PIN_EN_1, PIN_IA_1, PIN_IB_1},
-    {PIN_EN_2, PIN_IA_2, PIN_IB_2},
-    {PIN_EN_3, PIN_IA_3, PIN_IB_3},
-    {PIN_EN_4, PIN_IA_4, PIN_IB_4},
-    {PIN_EN_5, PIN_IA_5, PIN_IB_5},
-    {PIN_EN_6, PIN_IA_6, PIN_IB_6}
+    {PIN_EN_1, PIN_IA_1, PIN_IB_1}, // M1 T_TURRET
+    {PIN_EN_2, PIN_IA_2, PIN_IB_2}, // M2 T_RIGHT_TRUCK
+    {PIN_EN_3, PIN_IA_3, PIN_IB_3}, // M3 T_LEFT_TRUCK
+    {PIN_EN_4, PIN_IA_4, PIN_IB_4}, // M4 T_CANNON_ELEV
+    {PIN_EN_5, PIN_IA_5, PIN_IB_5}, // M5 T_CANNON_FIRE
+    {PIN_EN_6, PIN_IA_6, PIN_IB_6}  // M6
 };
 
 
 typedef enum 
 {
-    T_LEFT_TRUCK,
+    T_TURRET = 0,
     T_RIGHT_TRUCK,
-    T_TURRET,
+    T_LEFT_TRUCK,
     T_CANNON_ELEV,
     T_CANNON_FIRE
 } tank_motors_t;
